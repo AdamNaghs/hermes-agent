@@ -2989,10 +2989,14 @@ class TestThemeBootstrapCSS:
         dist = tmp_path / "web_dist"
         (dist / "assets").mkdir(parents=True)
         (dist / "index.html").write_text(
-            "<html><head><title>t</title></head><body>SPA</body></html>",
+            "<html><head><title>t</title>"
+            '<link rel="manifest" href="/manifest.webmanifest">'
+            '<link rel="apple-touch-icon" href="/icons/hermes-180.png">'
+            "</head><body>SPA</body></html>",
             encoding="utf-8",
         )
         monkeypatch.setattr(ws, "WEB_DIST", dist)
+        monkeypatch.delenv("HERMES_SERVE_HEADLESS", raising=False)
         spa_app = FastAPI()
         ws.mount_spa(spa_app)
         return TestClient(spa_app)
@@ -3012,6 +3016,15 @@ class TestThemeBootstrapCSS:
         # Injected inside <head>, before the closing tag.
         head = resp.text.split("</head>")[0]
         assert "hermes-theme-bootstrap" in head
+
+    def test_serve_index_rewrites_pwa_paths_for_a_proxy_prefix(self, tmp_path, monkeypatch):
+        client = self._mount_spa_client(tmp_path, monkeypatch)
+
+        resp = client.get("/sessions", headers={"X-Forwarded-Prefix": "/hermes"})
+
+        assert resp.status_code == 200
+        assert 'href="/hermes/manifest.webmanifest"' in resp.text
+        assert 'href="/hermes/icons/hermes-180.png"' in resp.text
 
 
 
