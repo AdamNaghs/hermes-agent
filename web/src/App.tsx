@@ -525,8 +525,8 @@ export default function App() {
 
       <header
         className={cn(
-          "lg:hidden fixed top-0 left-0 right-0 z-40 min-h-14",
-          "flex items-center gap-2 px-4 py-2",
+          "lg:hidden fixed top-0 left-0 right-0 z-40 min-h-[calc(3.5rem+env(safe-area-inset-top))]",
+          "flex items-center gap-2 px-4 pb-2 pt-[calc(0.5rem+env(safe-area-inset-top))]",
           "border-b border-current/20",
           "bg-background-base",
         )}
@@ -568,13 +568,13 @@ export default function App() {
       <PluginSlot name="header-banner" />
       <ProfileScopeBanner />
 
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pt-14 lg:pt-0">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden pt-[calc(3.5rem+env(safe-area-inset-top))] lg:pt-0">
         <div className="flex min-h-0 min-w-0 flex-1">
           <aside
             id="app-sidebar"
             aria-label={t.app.navigation}
             className={cn(
-              "fixed top-0 left-0 z-50 flex h-dvh max-h-dvh w-64 min-h-0 flex-col font-sans",
+              "fixed top-0 left-0 z-50 flex h-dvh max-h-dvh w-64 min-h-0 flex-col pt-[env(safe-area-inset-top)] lg:pt-0 font-sans",
               "border-r border-current/20",
               "bg-background-base",
               "transition-[transform] duration-200 ease-[cubic-bezier(0.23,1,0.32,1)]",
